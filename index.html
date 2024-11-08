@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sevgilime Özel Playlist</title>
+    <title>Playlist</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Sana Özel Müzik Listem</h1>
+        <h1>Erkam KÜCET</h1>
         <p>🎶</p>
         <audio id="audioPlayer" controls autoplay>
             <source src="mp3-dosyasi1.mp3" type="audio/mpeg">
@@ -17,23 +17,16 @@
     </div>
 
     <script>
-        // MP3 dosyalarının listesi
         const playlist = [
-            'Bir_Bilebilsen.mp3',
-            'Don_Diyemem.mp3',
-            'Birakma_Kendini.mp3',
-            'Vazgec_Artik_Ruyalarimdan.mp3',
-            'Sen_Beni_Guzel_Hatirla.mp3'
+            'mutlu_yillar.mp3'
         ];
 
-        let currentTrack = 0; // Şu anki şarkının indeksini tutar
+        let currentTrack = 0;
         const audioPlayer = document.getElementById('audioPlayer');
 
-        // İlk şarkıyı başlat
         audioPlayer.src = playlist[currentTrack];
         audioPlayer.play();
 
-        // Oynatma bittiğinde sıradaki şarkıya geç
         audioPlayer.addEventListener('ended', () => {
             currentTrack++;
             if (currentTrack < playlist.length) {
