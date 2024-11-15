@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çalma Listesi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        audio {
+            width: 100%;
+            margin: 15px 0;
+        }
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .playlist li {
+            padding: 10px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .playlist li:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .playlist .active {
+            background: rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Çalma Listesi</h1>
+        <p>🎶</p>
+        <audio id="audioPlayer" controls>
+            <source src="" type="audio/mpeg">
+            Tarayıcınız bu ses dosyasını desteklemiyor.
+        </audio>
+        <p>Çalınan Şarkı: <span id="currentSong">Yok</span></p>
+        <ul class="playlist" id="playlist">
+            <!-- Şarkı listesi dinamik olarak burada oluşturulacak -->
+        </ul>
+    </div>
+
+    <script>
+        // Şarkı listesi
+        const playlist = [
+            '1.mp3',
+            '2.mp3',
+            '3.mp3'
+        ];
+
+        let currentTrack = 0;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const currentSong = document.getElementById('currentSong');
+        const playlistElement = document.getElementById('playlist');
+
+        // Çalma listesini oluştur
+        playlist.forEach((song, index) => {
+            const li = document.createElement('li');
+            li.textContent = `Şarkı ${index + 1}`;
+            li.dataset.index = index;
+            li.addEventListener('click', () => {
+                currentTrack = index;
+                playTrack();
+            });
+            playlistElement.appendChild(li);
+        });
+
+        const updatePlaylistUI = () => {
+            const items = playlistElement.querySelectorAll('li');
+            items.forEach((item, index) => {
+                item.classList.toggle('active', index === currentTrack);
+            });
+        };
+
+        const playTrack = () => {
+            audioPlayer.setAttribute('src', playlist[currentTrack]);
+            currentSong.textContent = `Şarkı ${currentTrack + 1}`;
+            audioPlayer.play().catch(error => {
+                console.log("Ses çalma engellendi, kullanıcı etkileşimi gerekiyor.", error);
+            });
+            updatePlaylistUI();
+        };
+
+        audioPlayer.addEventListener('ended', () => {
+            currentTrack++;
+            if (currentTrack < playlist.length) {
+                playTrack();
+            } else {
+                currentTrack = 0; // Baştan başlat
+                playTrack();
+            }
+        });
+
+        // İlk şarkıyı başlat (kullanıcı tıklayana kadar bekle)
+        document.body.addEventListener('click', () => {
+            playTrack();
+        }, { once: true });
+    </script>
+</body>
+</html>
