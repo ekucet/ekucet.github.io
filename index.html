@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Çalma Listesi</title>
     <style>
+        /* Stil */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to right, #6a11cb, #2575fc);
@@ -57,11 +58,21 @@
             font-weight: bold;
             color: #000;
         }
+        .poem {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #f1f1f1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Doğum Günün Kutlu Olsun :)</h1>
+        <h1>Çalma Listesi</h1>
         <p>🎶</p>
         <audio id="audioPlayer" controls>
             <source src="" type="audio/mpeg">
@@ -71,6 +82,18 @@
         <ul class="playlist" id="playlist">
             <!-- Şarkı listesi dinamik olarak burada oluşturulacak -->
         </ul>
+        <div class="poem">
+            Türkiye'de İstanbul ne ise,<br>
+            İstanbul'da gece ne ise<br>
+            Gecede yürümek ne ise<br>
+            Yürürken düşünmek ne ise<br>
+            Seni unutamamacasına düşünmek ne ise<br>
+            Unutamamanın anlamı ne ise<br>
+            Seni sevmek ne ise<br>
+            Saklayayım mı yok söyleyeyim derken<br>
+            Birden aşka düşmek ne ise ...<br>
+            Her neyse ...
+        </div>
     </div>
 
     <script>
