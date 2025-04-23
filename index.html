@@ -109,14 +109,15 @@
 <body>
   <h1>Sana Kalan 💖</h1>
   <div class="countdown">
-    <div id="count1">İlk güzel anımıza kalan: </div>
-    <div id="count2">İkinci özel güne kalan: </div>
+    <div id="count1"></div>
+    <div id="count2"></div>
   </div>
 
   <div class="hearts"></div>
 
+  <!-- Mark Eliyahu - demo loop -->
   <audio autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a1ce2a81de.mp3?filename=romantic-piano-ambient-music-2203.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_872f0e18d7.mp3?filename=inspiring-emotional-ambient-116199.mp3" type="audio/mpeg">
     Tarayıcınız audio elementini desteklemiyor.
   </audio>
 
@@ -129,8 +130,8 @@
       const days1 = Math.ceil((date1 - today) / (1000 * 60 * 60 * 24));
       const days2 = Math.ceil((date2 - today) / (1000 * 60 * 60 * 24));
 
-      document.getElementById("count1").innerHTML = `İlk güzel anımıza kalan: <strong>${days1}</strong>`;
-      document.getElementById("count2").innerHTML = `İkinci özel güne kalan: <strong>${days2}</strong>`;
+      document.getElementById("count1").innerHTML = `<strong>${days1}</strong> gün kaldı.`;
+      document.getElementById("count2").innerHTML = `<strong>${days2}</strong> gün kaldı.`;
     }
 
     function createHeart() {
