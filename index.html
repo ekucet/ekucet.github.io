@@ -115,8 +115,8 @@
 
   <div class="hearts"></div>
 
-  <!-- Yerel mp3 dosyası loop -->
-  <audio autoplay loop>
+  <!-- Yerel mp3 dosyası loop ve otomatik başlatma için JavaScript -->
+  <audio id="bg-music" loop>
     <source src="1.mp3" type="audio/mpeg">
     Tarayıcınız audio elementini desteklemiyor.
   </audio>
@@ -143,9 +143,22 @@
       setTimeout(() => heart.remove(), 7000);
     }
 
+    function playMusic() {
+      const audio = document.getElementById("bg-music");
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          document.addEventListener("click", () => {
+            audio.play();
+          }, { once: true });
+        });
+      }
+    }
+
     updateCountdowns();
     setInterval(updateCountdowns, 1000 * 60 * 60);
     setInterval(createHeart, 300);
+    window.addEventListener('load', playMusic);
   </script>
 </body>
 </html>
