@@ -104,9 +104,24 @@
         opacity: 0;
       }
     }
+
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #b00040;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
-<body onclick="document.getElementById('bg-music').play()">
+<body>
   <h1>Sana Kalan 💖</h1>
   <div class="countdown">
     <div id="count1"></div>
@@ -117,6 +132,7 @@
 
   <!-- Yerel mp3 dosyası loop -->
   <audio id="bg-music" src="1.mp3" type="audio/mpeg" loop></audio>
+  <button id="music-toggle">Müziği Aç</button>
 
   <script>
     function updateCountdowns() {
@@ -139,6 +155,17 @@
       document.querySelector(".hearts").appendChild(heart);
       setTimeout(() => heart.remove(), 7000);
     }
+
+    document.getElementById("music-toggle").addEventListener("click", () => {
+      const audio = document.getElementById("bg-music");
+      if (audio.paused) {
+        audio.play();
+        document.getElementById("music-toggle").innerText = "Müziği Kapat";
+      } else {
+        audio.pause();
+        document.getElementById("music-toggle").innerText = "Müziği Aç";
+      }
+    });
 
     updateCountdowns();
     setInterval(updateCountdowns, 1000 * 60 * 60);
