@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sana Kalan Günler</title>
+  <title>Sana Kalan</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -107,10 +107,10 @@
   </style>
 </head>
 <body>
-  <h1>Geri Sayım Aşkım 💖</h1>
+  <h1>Sana Kalan 💖</h1>
   <div class="countdown">
-    <div id="count1">26 Haziran'a kalan: </div>
-    <div id="count2">26 Ağustos'a kalan: </div>
+    <div id="count1">İlk güzel anımıza kalan: </div>
+    <div id="count2">İkinci özel güne kalan: </div>
   </div>
 
   <div class="hearts"></div>
@@ -129,8 +129,8 @@
       const days1 = Math.ceil((date1 - today) / (1000 * 60 * 60 * 24));
       const days2 = Math.ceil((date2 - today) / (1000 * 60 * 60 * 24));
 
-      document.getElementById("count1").innerHTML = `26 Haziran'a kalan: <strong>${days1}</strong>`;
-      document.getElementById("count2").innerHTML = `26 Ağustos'a kalan: <strong>${days2}</strong>`;
+      document.getElementById("count1").innerHTML = `İlk güzel anımıza kalan: <strong>${days1}</strong>`;
+      document.getElementById("count2").innerHTML = `İkinci özel güne kalan: <strong>${days2}</strong>`;
     }
 
     function createHeart() {
