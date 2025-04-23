@@ -37,7 +37,7 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      font-size: 1.5rem;
+      font-size: 2rem;
       background: rgba(255,255,255,0.9);
       padding: 20px 40px;
       border-radius: 16px;
@@ -143,8 +143,8 @@
       const days1 = Math.ceil((date1 - today) / (1000 * 60 * 60 * 24));
       const days2 = Math.ceil((date2 - today) / (1000 * 60 * 60 * 24));
 
-      document.getElementById("count1").innerHTML = `<strong>${days1}</strong> gün kaldı.`;
-      document.getElementById("count2").innerHTML = `<strong>${days2}</strong> gün kaldı.`;
+      document.getElementById("count1").innerHTML = `<strong>${days1}</strong>`;
+      document.getElementById("count2").innerHTML = `<strong>${days2}</strong>`;
     }
 
     function createHeart() {
