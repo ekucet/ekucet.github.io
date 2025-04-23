@@ -6,11 +6,15 @@
   <title>Sana Kalan Günler</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       height: 100vh;
-      background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+      background: linear-gradient(to right, #ffe0e9 0%, #ffc3a0 100%);
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
       display: flex;
@@ -18,6 +22,7 @@
       justify-content: center;
       flex-direction: column;
       color: #333;
+      position: relative;
     }
 
     h1 {
@@ -25,6 +30,7 @@
       font-size: 3rem;
       margin-bottom: 10px;
       text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      color: #b00040;
     }
 
     .countdown {
@@ -32,16 +38,28 @@
       flex-direction: column;
       gap: 1rem;
       font-size: 1.5rem;
+      background: rgba(255,255,255,0.8);
+      padding: 20px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
-    .leaf {
+    .leaf, .paper {
       position: absolute;
       width: 60px;
       height: 60px;
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Autumn_leaf_icon.svg/1200px-Autumn_leaf_icon.svg.png');
       background-size: contain;
       background-repeat: no-repeat;
       animation: fall linear infinite;
+      z-index: 0;
+    }
+
+    .leaf {
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Autumn_leaf_icon.svg/1200px-Autumn_leaf_icon.svg.png');
+    }
+
+    .paper {
+      background-image: url('https://cdn-icons-png.flaticon.com/512/2629/2629878.png');
     }
 
     @keyframes fall {
@@ -66,7 +84,6 @@
   <script>
     function updateCountdowns() {
       const today = new Date();
-
       const date1 = new Date("2025-06-26");
       const date2 = new Date("2025-08-26");
 
@@ -77,18 +94,19 @@
       document.getElementById("count2").innerHTML = `26 Ağustos 2025'e kalan gün: <strong>${days2}</strong>`;
     }
 
-    function createLeaf() {
-      const leaf = document.createElement("div");
-      leaf.classList.add("leaf");
-      leaf.style.left = Math.random() * 100 + "vw";
-      leaf.style.animationDuration = (Math.random() * 3 + 2) + "s";
-      document.body.appendChild(leaf);
-      setTimeout(() => leaf.remove(), 5000);
+    function createFloatingElement(type) {
+      const el = document.createElement("div");
+      el.classList.add(type);
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.animationDuration = (Math.random() * 5 + 3) + "s";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 8000);
     }
 
     updateCountdowns();
-    setInterval(updateCountdowns, 1000 * 60 * 60); // her saat güncelle
-    setInterval(createLeaf, 500);
+    setInterval(updateCountdowns, 1000 * 60 * 60);
+    setInterval(() => createFloatingElement('leaf'), 600);
+    setInterval(() => createFloatingElement('paper'), 1200);
   </script>
 </body>
 </html>
