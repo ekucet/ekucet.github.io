@@ -36,13 +36,41 @@
     .countdown {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      font-size: 2rem;
-      background: rgba(255,255,255,0.9);
-      padding: 20px 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      animation: slideUp 2s ease-out forwards;
+      gap: 2rem;
+      font-size: 2.5rem;
+      background: #fff;
+      padding: 40px 60px;
+      border-radius: 20px 20px 40px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-top: 6px solid #b00040;
+      position: relative;
+      text-align: center;
+    }
+
+    .countdown::before {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 12px;
+      background: #b00040;
+      border-radius: 6px;
+    }
+
+    .countdown div {
+      background: #f7f7f7;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-weight: bold;
+      color: #b00040;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     @keyframes fadeIn {
@@ -143,8 +171,8 @@
       const days1 = Math.ceil((date1 - today) / (1000 * 60 * 60 * 24));
       const days2 = Math.ceil((date2 - today) / (1000 * 60 * 60 * 24));
 
-      document.getElementById("count1").innerHTML = `<strong>${days1}</strong>`;
-      document.getElementById("count2").innerHTML = `<strong>${days2}</strong>`;
+      document.getElementById("count1").innerHTML = `${days1}`;
+      document.getElementById("count2").innerHTML = `${days2}`;
     }
 
     function createHeart() {
