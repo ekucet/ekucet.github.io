@@ -1,238 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sana Kalan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ortanca | Siyah Zemin</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    :root { color-scheme: dark; }
+    html, body { height: 100%; }
     body {
-      height: 100vh;
-      background: radial-gradient(circle at top left, #ffe0f0, #ffc3a0);
-      overflow: hidden;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
+      margin: 0;
+      background: #000;
+      display: grid;
+      place-items: center;
+      min-height: 100svh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .wrap {
+      width: min(90vw, 860px);
+      padding: 24px;
+      box-sizing: border-box;
+      display: grid;
+      place-items: center;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,.7));
+    }
+
+    /* Autoplay engellenirse görünen katman */
+    .play-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      color: #333;
-      position: relative;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      z-index: 9999;
-      background: #ffc3a0;
-      animation: openDoors 2s forwards;
-    }
-
-    .overlay div {
-      width: 50%;
-      height: 100%;
-      background: #ffc3a0;
-    }
-
-    @keyframes openDoors {
-      0% { clip-path: inset(0 0 0 0); }
-      100% { clip-path: inset(0 50% 0 50%); }
-    }
-
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      margin-bottom: 10px;
-      color: #b00040;
-      opacity: 0;
-      transform: scale(0.8);
-      animation: fadeInTitle 2s 2s forwards;
-    }
-
-    @keyframes fadeInTitle {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .countdown {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      font-size: 2.5rem;
-      background: #fff;
-      padding: 40px 60px;
-      border-radius: 20px 20px 40px 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      border-top: 6px solid #b00040;
-      position: relative;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 2s 2.5s forwards;
-    }
-
-    .countdown::before {
-      content: "";
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 12px;
-      background: #b00040;
-      border-radius: 6px;
-    }
-
-    .countdown div {
-      background: #f7f7f7;
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      font-weight: bold;
-      color: #b00040;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    @keyframes slideUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hearts {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(45deg);
-      animation: float 6s linear infinite;
-    }
-
-    .heart::before, .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
-
-    #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #b00040;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-size: 14px;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(2px);
       cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      user-select: none;
+    }
+    body.blocked .play-overlay { display: flex; }
+    .play-overlay button {
+      appearance: none;
+      border: 0;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      img { transition: transform .6s ease; }
+      img:hover { transform: scale(1.01); }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"><div></div><div></div></div>
+  <main class="wrap" aria-label="Ortalanmış görsel">
+    <!-- Görselinizi aynı klasöre 'hydrangea.png' adıyla koyun -->
+    <img src="hydrangea.png" alt="Siyah arka plan üzerinde ortanca (hydrangea) çiçeği" />
+  </main>
 
-  <h1>Sana Kalan 💖</h1>
+  <!-- MP3 dosyanızı aynı klasöre 'music.mp3' adıyla koyun -->
+  <audio id="bgm" src="music.mp3" autoplay loop preload="auto"></audio>
 
-  <div class="countdown">
-    <div id="count1"></div>
-    <div id="count2"></div>
+  <!-- Autoplay engellenirse kullanıcıya görünür -->
+  <div class="play-overlay" id="overlay" role="button" tabindex="0" aria-label="Müziği başlat">
+    <button type="button">🔊 Müziği başlat</button>
   </div>
 
-  <div class="hearts"></div>
-
-  <!-- Yerel mp3 dosyası loop -->
-  <audio id="bg-music" src="1.mp3" type="audio/mpeg" loop></audio>
-  <button id="music-toggle">Müziği Aç</button>
+  <noscript>
+    <!-- JS kapalıysa tarayıcı izin veriyorsa yine de çalar -->
+  </noscript>
 
   <script>
-    function updateCountdowns() {
-      const now = new Date();
-      const turkishTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
-      const date1 = new Date("2025-06-26T00:00:00+03:00");
-      const date2 = new Date("2025-08-26T00:00:00+03:00");
-      const days1 = Math.ceil((date1 - turkishTime) / (1000 * 60 * 60 * 24));
-      const days2 = Math.ceil((date2 - turkishTime) / (1000 * 60 * 60 * 24));
+    const audio = document.getElementById('bgm');
+    const overlay = document.getElementById('overlay');
 
-      document.getElementById("count1").innerHTML = `${days1}`;
-      document.getElementById("count2").innerHTML = `${days2}`;
-    }
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-      document.querySelector(".hearts").appendChild(heart);
-      setTimeout(() => heart.remove(), 7000);
-    }
-
-    document.getElementById("music-toggle").addEventListener("click", () => {
-      const audio = document.getElementById("bg-music");
-      if (audio.paused) {
-        audio.play();
-        document.getElementById("music-toggle").innerText = "Müziği Kapat";
-      } else {
-        audio.pause();
-        document.getElementById("music-toggle").innerText = "Müziği Aç";
-      }
+    // İlk deneme: sayfa açılır açılmaz çalmayı dene
+    audio.play().catch(() => {
+      document.body.classList.add('blocked'); // Engellendiyse katmanı göster
     });
 
-    updateCountdowns();
-    setInterval(updateCountdowns, 1000 * 60 * 60);
-    setInterval(createHeart, 300);
+    // Kullanıcı etkileşimi olursa tekrar dene ve katmanı kapat
+    function start() {
+      audio.play().then(() => {
+        document.body.classList.remove('blocked');
+      }).catch(() => {}); // başarısızsa sessizce bırak
+    }
+    ['click', 'touchend', 'keydown'].forEach(ev =>
+      overlay.addEventListener(ev, start, { once: true })
+    );
   </script>
 </body>
 </html>
