@@ -3,98 +3,91 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>...</title>
+  <title>Ortanca + Otomatik Müzik</title>
   <style>
     :root { color-scheme: dark; }
-    html, body { height: 100%; }
+    html, body { height: 100%; margin: 0; }
     body {
-      margin: 0;
       background: #000;
       display: grid;
       place-items: center;
       min-height: 100svh;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-    .wrap {
-      width: min(90vw, 860px);
-      padding: 24px;
-      box-sizing: border-box;
-      display: grid;
-      place-items: center;
-    }
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 16px;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,.7));
-    }
+    .wrap { width: min(90vw, 860px); padding: 24px; box-sizing: border-box; }
+    img { width: 100%; height: auto; display: block; border-radius: 16px; filter: drop-shadow(0 10px 30px rgba(0,0,0,.7)); }
 
-    /* Autoplay engellenirse görünen katman */
-    .play-overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,.6);
-      backdrop-filter: blur(2px);
-      cursor: pointer;
-      user-select: none;
-    }
-    body.blocked .play-overlay { display: flex; }
-    .play-overlay button {
-      appearance: none;
-      border: 0;
-      padding: 14px 20px;
-      border-radius: 12px;
-      background: #fff;
-      color: #000;
-      font-weight: 700;
-      font-size: 16px;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      img { transition: transform .6s ease; }
-      img:hover { transform: scale(1.01); }
-    }
+    /* Sadece gerekirse görünen “ses aç” katmanı */
+    .blocked { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.6); backdrop-filter: blur(2px); }
+    .blocked.show { display: flex; }
+    .blocked button { border: 0; padding: 14px 20px; border-radius: 12px; background: #fff; color: #000; font-weight: 700; font-size: 16px; cursor: pointer; }
   </style>
 </head>
 <body>
   <main class="wrap" aria-label="Ortalanmış görsel">
-    <!-- Görselinizi aynı klasöre 'hydrangea.png' adıyla koyun -->
-    <img src="hydrangea.png" alt="Siyah arka plan üzerinde ortanca (hydrangea) çiçeği" />
+    <img src="hydrangea.png" alt="Siyah arka plan üzerinde ortanca (hydrangea) çiçeği">
   </main>
 
-  <!-- MP3 dosyanızı aynı klasöre 'music.mp3' adıyla koyun -->
-  <audio id="bgm" src="music.mp3" autoplay loop preload="auto"></audio>
+  <!-- Önemli: muted + autoplay + playsinline -> sessizce kesin başlar -->
+  <audio id="bgm" src="music.mp3" autoplay loop muted playsinline preload="auto"></audio>
 
-  <!-- Autoplay engellenirse kullanıcıya görünür -->
-  <div class="play-overlay" id="overlay" role="button" tabindex="0" aria-label="Müziği başlat">
-    <button type="button">🔊 Müziği başlat</button>
+  <div class="blocked" id="unblock">
+    <button type="button">🔊 Sesi Aç</button>
   </div>
-
-  <noscript>
-    <!-- JS kapalıysa tarayıcı izin veriyorsa yine de çalar -->
-  </noscript>
 
   <script>
     const audio = document.getElementById('bgm');
-    const overlay = document.getElementById('overlay');
+    const panel = document.getElementById('unblock');
 
-    // İlk deneme: sayfa açılır açılmaz çalmayı dene
-    audio.play().catch(() => {
-      document.body.classList.add('blocked'); // Engellendiyse katmanı göster
+    // 1) İlk anda başlat (sessiz autoplay kesinleşsin)
+    const ensurePlay = () => audio.play().catch(() => { /* sessizce geç */ });
+
+    // 2) Ardışık otomatik "sessizden sesliye" denemeleri
+    async function tryUnmute() {
+      try {
+        // bazı tarayıcılarda önce volume set etmek unmute'a yardım eder
+        audio.volume = 1.0;
+        audio.muted = false;
+        await audio.play();
+        // Başardıysa paneli gizle
+        if (!audio.muted && !audio.paused) panel.classList.remove('show');
+      } catch (e) {
+        // Başaramadıysa sonra tekrar deneyeceğiz
+      }
+    }
+
+    // 3) Birkaç farklı zamanlamada dene (tarayıcıya göre değişebiliyor)
+    function scheduleUnmuteAttempts() {
+      const times = [100, 400, 1000, 2000, 3500];
+      times.forEach(t => setTimeout(tryUnmute, t));
+    }
+
+    // 4) Sekme görünür olduğunda tekrar dene
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) { ensurePlay(); scheduleUnmuteAttempts(); }
     });
 
-    // Kullanıcı etkileşimi olursa tekrar dene ve katmanı kapat
-    function start() {
-      audio.play().then(() => {
-        document.body.classList.remove('blocked');
-      }).catch(() => {}); // başarısızsa sessizce bırak
-    }
-    ['click', 'touchend', 'keydown'].forEach(ev =>
-      overlay.addEventListener(ev, start, { once: true })
-    );
+    // 5) Medya olayları tetiklenince tekrar dene
+    ['canplay', 'playing', 'loadeddata', 'timeupdate'].forEach(ev => {
+      audio.addEventListener(ev, () => { ensurePlay(); tryUnmute(); }, { once: false });
+    });
+
+    // 6) İlk yüklemede çalıştır
+    ensurePlay();
+    scheduleUnmuteAttempts();
+
+    // 7) Hâlâ ses kilitliyse (ör. bazı tarayıcı ayarları), paneli göster
+    setTimeout(() => {
+      if (audio.paused || audio.muted) panel.classList.add('show');
+    }, 4000);
+
+    // 8) Kullanıcı bir kez tıklarsa kesin aç
+    const unlock = async () => {
+      try { await audio.play(); audio.muted = false; audio.volume = 1.0; panel.classList.remove('show'); }
+      catch (_) {}
+    };
+    panel.addEventListener('click', unlock, { once: true });
+    panel.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') unlock(); }, { once: true });
   </script>
 </body>
 </html>
